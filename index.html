@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="stylesheet" href="bootstrap-theme.min.css">
+        
+        <link rel="stylesheet" href="chains.css">
+        <link rel="stylesheet" href="jsoneditor/jsoneditor.css">
+        
+        <style type="text/css">
+          body { overflow: hidden; }
+          iframe { border: 0px; }
+        </style>
+
+        <script src="underscore-min.js"></script>
+        <script src="jquery-2.1.4.min.js"></script>
+        <script src="URI.js"></script>
+        <script src="moment-with-locales.min.js"></script>
+        <script src="bootstrap.min.js"></script>
+        
+        <script src="jsoneditor/jsoneditor.js"></script>
+        
+        <script src="storage.js"></script>
+
+        <script type="text/javascript">
+            $(function() {
+              moment.locale(navigator.language);
+              
+              reload();
+              
+              $(window).on('hashchange', function() {
+                reload();
+              });
+              
+              $(window).resize(function() {
+                reload();
+              });
+            });
+            
+            function reload()
+            {
+              // Any section
+              $(".section").addClass("hidden");
+              $(".section-link").removeClass("active");
+              $("body").css("background-color", "#222");
+              
+              var uri = new URI();
+              var hash = uri.hash();
+              $(hash).removeClass("hidden");
+              $(hash + "link").addClass("active");
+              
+              // Per section
+              if(hash == "#chains")
+                chains();
+                
+              //if(hash == "#jsoneditor")
+              //  ();
+                
+              if(hash == "")
+              {
+                spacetime();
+                $("#main").removeClass("hidden");
+              }
+            }
+            
+            function getSectionHeight()
+            {
+              return $(window).height() - $(".navbar").outerHeight(true);
+            }
+            
+            function getSectionWidth()
+            {
+              return $(window).width();
+            }
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div class="navbar-brand">
+                 <img class="inline-block" src="logo.svg" width="34px" />
+              </div>
+              <a class="navbar-brand visible-md visible-lg" href="/">Correlation Center</a>
+              <a class="navbar-brand visible-sm visible-xs" href="/">CORCEN</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                <li id="chainslink" class="section-link"><a href="#chains">Технологические цепочки</a></li>
+                <li id="jsoneditorlink" class="section-link"><a href="#jsoneditor">Редактор</a></li> 
+              </ul>
+            </div>
+          </div>
+        </nav>
+        
+        <!-- Site sections -->
+        <div id="main" class="section hidden">
+          <script src="spacetime.js"></script>
+        </div>
+        <div id="chains" class="section hidden">
+
+          <div id="chart"></div>
+          
+          <script src="d3.v3.min.js"></script>
+          <script src="bihisankey.js"></script>
+          <script src="chains.js"></script>
+
+        </div>
+        <div id="jsoneditor" class="section hidden">
+          <!--
+          <div id="json-editor-container"></div>
+          
+          <div class="row">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6" id="left-json-editor-container"></div>
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6" id="right-json-editor-container"></div>
+          </div> 
+          
+          <script src="editor.js"></script> 
+          -->
+          
+          <iframe id="json-editor-container" height="100px" width="100px" src="editor.html"></iframe>
+          <script>
+            var container = $('#json-editor-container');
+            container.css("width", getSectionWidth());
+            container.css("height", getSectionHeight());
+          </script>
+        </div>
+        <!-- Site sections -->
+    </body>
+</html>
