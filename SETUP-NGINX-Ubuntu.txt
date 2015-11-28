@@ -1,0 +1,28 @@
+$ - command
+# - action
+
+$ sudo apt-get update
+$ sudo apt-get install nginx git
+$ cd /etc/nginx/sites-enabled
+$ nano /etc/nginx/sites-enabled/default
+# comment out default
+$ cp default wikiresources
+$ nano /etc/nginx/sites-enabled/wikiresources
+# set nginx like this:
+server {
+	listen 80;
+	listen wikiresources.net:80;
+	
+	server_name wikiresources.net;
+	root /home/ccc;
+	index index.html index.htm;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+}
+$ cd /home
+$ git clone https://github.com/linksplatform/ccc
+$ chown -R www-data:www-data ccc
+$ chmod -R 0777 ccc
+$ sudo service nginx restart
